@@ -2,7 +2,7 @@
 
 This code is provided for educational purposes only. The author takes no responsibility for any misuse or harm caused by using this tool. Please use it responsibly and ethically.
 
-Here's the `README.md` content for you to copy and paste directly without GitHub-flavored formatting:
+Here's the updated `README.md` with steps to acquire the **Google Drive Service Account Key JSON file**:
 
 ---
 
@@ -30,6 +30,38 @@ Make sure you have the following installed on your system:
 
 - Python (https://www.python.org/downloads/)
 - Google Drive Service Account key (JSON file placed in the project folder)
+
+---
+
+## How to Acquire the Google Drive Service Account Key JSON File
+
+1. **Go to the Google Cloud Console**:  
+   Visit: https://console.cloud.google.com/
+
+2. **Create a New Project**:  
+   - Click on the **"Select a project"** dropdown.
+   - Click on **"New Project"**.
+   - Enter the project name and click **"Create"**.
+
+3. **Enable the Google Drive API**:  
+   - In the Google Cloud Console, navigate to **APIs & Services** > **Library**.
+   - Search for **"Google Drive API"**.
+   - Click on it and enable the API for your project.
+
+4. **Create a Service Account**:  
+   - In the left sidebar, go to **IAM & Admin** > **Service Accounts**.
+   - Click on **"Create Service Account"**.
+   - Enter a service account name and description, then click **"Create"**.
+   - Grant any necessary roles (e.g., **Project > Editor**) and click **"Continue"**.
+
+5. **Generate the Key File**:  
+   - In the Service Account details page, go to the **Keys** tab.
+   - Click on **"Add Key"** > **"Create New Key"**.
+   - Choose **JSON** as the key type and click **"Create"**.
+   - This will download a JSON file to your system (`your-key.json`).
+
+6. **Place the Key File in Your Project Folder**:  
+   - Move the downloaded JSON file to the same folder where your project files are located.
 
 ---
 
@@ -97,7 +129,3 @@ This project is open-source and free to use.
 ## Contact
 
 If you have questions, issues, or suggestions, please feel free to open an issue on this repository. Happy coding! 🚀
-
----
-
-You can copy and paste this directly into your `README.md` file. Let me know if you need any changes or additions! 😊
