@@ -74,7 +74,7 @@ def upload_text_file(file_path, file_name, folder_id):
             file_metadata['parents'] = [folder_id]
 
         # Upload the file to Google Drive
-        media = MediaFileUpload(file_path, mimetype='text/plain')
+        media = MediaFileUpload(file_path, mimetype='text/plain', resumable=True)
         file = drive_service.files().create(
             body=file_metadata,
             media_body=media,
